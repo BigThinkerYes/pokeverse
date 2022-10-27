@@ -1,6 +1,10 @@
 body {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   font-weight: 300;
+  margin: 0 auto;
+  height: 100%;
+  background-color: #ffffff;
+  /* color:#87ceeb; */
 }
 
 h1 {
