@@ -65,15 +65,16 @@ function App() {
                   // aria-describeby="basic-addon1"
                 />
               </InputGroup>
-              <PokemonCard />
+             
             </div>
           </Col>
         </Row>
       </Container>
       <Container>
         <Row>
-          <Col>
+          
             {allPokemons.map((pokemon, index) => (
+              <Col>
               <PokemonCard
                 id={pokemon.id}
                 name={pokemon.name}
@@ -81,9 +82,11 @@ function App() {
                 type={pokemon.types[0].type.name}
                 key={index}
               />
+              </Col>
+      
             ))}
             {/* <h1>Pokemon should appear here</h1> */}
-          </Col>
+        
         </Row>
       </Container>
     </div>

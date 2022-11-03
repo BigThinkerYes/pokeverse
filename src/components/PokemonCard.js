@@ -20,7 +20,7 @@ const PokemonCard = ({ id, image, type, url, name }) => {
   // const classes = useStyles();
   return (
     <Container>
-      <Row xs={12} md={8} lg={3}>
+      <Row xs={12} md={8} lg={12}>
         {/* <Col xs={12} md={8} lg={3}> */}
         <CardGroup>
           <Card>
@@ -29,7 +29,6 @@ const PokemonCard = ({ id, image, type, url, name }) => {
               src={image}
               alt={name}
               height={"150"}
-              width={"150"}
             />
             <Card.Body>
               <Card.Title>
