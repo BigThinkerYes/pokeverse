@@ -1,68 +1,91 @@
+import React from "react";
+import { Navigation } from "./components/Navigation";
+import { PokemonCard } from "./components/PokemonCard";
 import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/esm/Container";
+import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
+import CardGroup from "react-bootstrap/CardGroup";
+import InputGroup from "react-bootstrap/InputGroup";
 import { Navigation } from "./components/Navigation";
 import { PokemonCard } from "./components/PokemonCard";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 
 // const LIMIT = 150;
 // const pokeApi = `https://pokeapi.co/api/v2/pokemon/?limit=${LIMIT}`;
-// useEffect(() => {
-//   axios
-//     .get(`https://pokeapi.co/api/v2/pokemon/?limit=${LIMIT}`)
-//     .then(function (response) {
-//       const { data } = response;
-//       const { results } = data;
-//       const newPokeITdata = {};
-//       results.forEach((pokemon, index) => {
-//         newPokeITdata[index + 1] = {
-//           id: index + 1,
-//           name: pokemon.name,
-//           sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-//             index + 1
-//           }.png`,
-//         };
-//       });
-//       setPokemonData(newPokeITdata);
-//     });
-// }, []);
-// };
-//
+
 function App() {
-  const [pokemonData, setPokemonData] = useState([]);
-  const [nextUrl, setNextUrl] = useState("");
-  const [prevUrl, setPrevUrl] = useState("");
-  const [loading, setLoading] = useState("");
-  const LIMIT = 150;
-  const pokeApi = `https://pokeapi.co/api/v2/pokemon/?limit=${LIMIT}`;
+  const [allPokemons, setAllPokemons] = useState([]);
+  const [loadMore, setLoadMore] = useState(
+    "https://pokeapi.co/api/v2/pokemon/?limit=150"
+  );
 
-  //get api data
-  useEffect(() => {
-    async function fetchData() {
-      // check for responses
-      console.log(response);
-      let response = await getAll(pokeApi);
-      setNextUrl(response.next);
-      setPrevUrl(response.previous);
-      await loadingPokemon(response.results);
-      setLoading(false);
+  const getAllPokemons = async () => {
+    const res = await fetch(loadMore);
+    const data = await res.json();
+    setLoadMore(data.next);
+
+    function createPokemonObject(results) {
+      results.forEach(async (pokemon) => {
+        const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${pokemon.name}`
+        );
+        const data = await res.json();
+        setAllPokemons((currentList) => [...currentList, data]);
+        await allPokemons.sort((a, b) => a.id - b.id);
+        console.log(data);
+      });
     }
-    fetchData();
-  }, []);
-
-  //  loading
-  const loadingPokemon = async (data) => {
-    let _poke = await Promise.all(data.map(async (pokemon) => {}));
+    createPokemonObject(data.results);
   };
-
+  useEffect(() => {
+    getAllPokemons();
+  }, []);
   return (
     <div data-testid="app">
-      <InputGroup>
-        <InputGroup.Text>Find:</InputGroup.Text>
-        <Form.Control as="textarea" aria-label="With textarea" />
-      </InputGroup>
-      <Navigation />
-      <div>{loading ? <h1>loading...</h1> : <h1>Gotta catch em all</h1>}</div>
-      <PokemonCard />
+      <Container>
+        <Row>
+          <Col xs={12} md={8}>
+            <div data-testid="app">
+              <Navigation />
+
+              <InputGroup className="mb-3">
+                <Button
+                  variant="outline-secondary"
+                  id="button-addon1"
+                  className="load-more"
+                >
+                  Search
+                </Button>
+                <Form.Control
+                  aria-label="search pokemon"
+                  // aria-describeby="basic-addon1"
+                />
+              </InputGroup>
+              <PokemonCard />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      <Container>
+        <Row>
+          <Col>
+            {allPokemons.map((pokemon, index) => (
+              <PokemonCard
+                id={pokemon.id}
+                name={pokemon.name}
+                image={pokemon.sprites.other.dream_world.front_default}
+                type={pokemon.types[0].type.name}
+                key={index}
+              />
+            ))}
+            {/* <h1>Pokemon should appear here</h1> */}
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
