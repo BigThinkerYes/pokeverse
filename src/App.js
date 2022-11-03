@@ -22,6 +22,12 @@ function App() {
   const [loadMore, setLoadMore] = useState(
     "https://pokeapi.co/api/v2/pokemon/?limit=150"
   );
+  
+  
+  const [filter, setFilter] = useState();
+  const handleSearchChange = (e) =>{
+    setFilter(e.target.value);
+  }
 
   const getAllPokemons = async () => {
     const res = await fetch(loadMore);
@@ -48,7 +54,7 @@ function App() {
     <div data-testid="app">
       <Container>
         <Row>
-          <Col xs={12} md={8}>
+          <Col xs={12} md={12} lg={12}>
             <div data-testid="app">
               <Navigation />
 
@@ -62,7 +68,9 @@ function App() {
                 </Button>
                 <Form.Control
                   aria-label="search pokemon"
-                  // aria-describeby="basic-addon1"
+                  placeholder="search pokemon"
+                  aria-describedby="basic-addon1"
+                  onChange={handleSearchChange}
                 />
               </InputGroup>
              
@@ -72,7 +80,19 @@ function App() {
       </Container>
       <Container>
         <Row>
-          
+          {/* col goes inside map to make images side by side */}
+            {/* {allPokemons.map((pokemon, index) => (
+              <Col>
+              <PokemonCard
+                id={pokemon.id}
+                name={pokemon.name}
+                image={pokemon.sprites.other.dream_world.front_default}
+                type={pokemon.types[0].type.name}
+                key={index}
+              />
+              </Col>
+      
+            ))} */}
             {allPokemons.map((pokemon, index) => (
               <Col>
               <PokemonCard
