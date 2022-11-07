@@ -16,7 +16,7 @@ import {
 //     paddingRight: "50px",
 //   },
 // });
-const PokemonCard = ({ id, image, type, url, name }) => {
+const PokemonCard = ({ abilities, image, type, url, name }) => {
   // const classes = useStyles();
   return (
     <Container>
@@ -31,7 +31,8 @@ const PokemonCard = ({ id, image, type, url, name }) => {
               </Card.Title>
               <Card.Text>
                 <small>
-                  {id} <br />
+                  abilities:
+                  <br /> {abilities} <br />
                 </small>
                 <small>
                   {type}

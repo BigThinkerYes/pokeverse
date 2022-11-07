@@ -100,7 +100,7 @@ function App() {
           {filterPokemon.map((pokemon, index) => (
             <Col key={index}>
               <PokemonCard
-                id={pokemon.id}
+                abilities={pokemon.abilities[0].ability.name}
                 name={pokemon.name}
                 image={pokemon.sprites.other.dream_world.front_default}
                 type={pokemon.types[0].type.name}
